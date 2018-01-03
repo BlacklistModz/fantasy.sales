@@ -1,10 +1,11 @@
 <div class="clearfix">
-	<div class="rfloat pam">
+	<div class="rfloat pam" style="display:flex;">
 		<?php if( !empty($this->item['line_id']) ) { ?>
-		<a href="http://line.me/ti/p/~<?=$this->item['line_id']?>" class="btn btn-green btn-jumbo" style="font-size: 30px;"><i class="icon-phone"></i></a>
+			<a href="http://line.me/ti/p/~<?=$this->item['line_id']?>" style="margin-right:5px;"><img src="<?=IMAGES?>/icon/line-me.png" style="height:50px; width:auto;" /></a>
 		<?php } ?>
-		<a href="tel:<?=$this->item['phone']?>" class="btn btn-blue btn-jumbo" style="font-size: 30px;"><i class="icon-phone"></i></a>
-		<a href="<?=URL?>orders/create/<?=$this->item['id']?>" class="btn btn-green btn-jumbo" style="font-size: 30px;"><i class="icon-cart-plus"></i></a>
+
+		<a href="tel:<?=$this->item['phone']?>" class="btn btn-blue btn-large" style="font-size: 30px; height:50px; width:50px; padding-top:9px; padding-left:9px;"><i class="icon-phone"></i></a>
+		<a href="<?=URL?>orders/create/<?=$this->item['id']?>" class="btn btn-green btn-large" style="font-size:30px; height:50px; width:50px; padding-top:9px; padding-left:9px;"><i class="icon-cart-plus"></i></a>
 	</div>
 	<div class="uiBoxGray pal">
 		<ui style="font-size: 16px;">
