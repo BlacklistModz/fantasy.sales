@@ -689,7 +689,7 @@ if ( typeof Object.create !== 'function' ) {
 			self.$elem = $(elem);
 			self.options = $.extend( {}, $.fn.formOrder.options, options );
 
-			self.$submit = self.$elem.find('.js-submit');
+			self.$submit = self.$elem.find('.submit');
 			self.$plus = self.$elem.find('.js-plus');
 			self.$remove = self.$elem.find('.js-remove');
 			self.$del = self.$elem.find('.js-del');
@@ -700,9 +700,31 @@ if ( typeof Object.create !== 'function' ) {
 			var self = this;
 
 			self.$submit.click(function(){
+
+				var form = $(this).parents('.js-form');
+				var id = form.data("id");
+				var data = form.serialize();
+
+				$.ajax({
+					type: "POST",
+					url: Event.URL + 'orders/updateItemSaleOder/' + id,
+					data: data,
+					success: function(res){
+
+						res = JSON.parse(res);
+
+						self.$elem.find('#total').text( PHP.number_format( res.total ) );
+						self.$elem.find('#discount').text( PHP.number_format( res.discount ) );
+						self.$elem.find('#amount').text( PHP.number_format( res.amount ) );
+						// Event.showMsg({ text: "อัพเดตเรียบร้อย",load: true , auto: true });
+					}
+				});
+
+				Dialog.close();
+
 				// $(this).submit();
 
-				var $input = $(this).parents('.js-submit-form').find('.js-number');
+				/* var $input = $(this).parents('.js-submit-form').find('.js-number');
 				var $price = $(this).parents('.js-submit-form').data("price");
 				var $prices = $(this).parents('.js-submit-form').find('.js-del').attr('data-prices');
 
@@ -714,12 +736,12 @@ if ( typeof Object.create !== 'function' ) {
 				self.$elem.find('#price').text( PHP.number_format(price+total_price) );
 				self.$elem.find('#total').text( PHP.number_format(total+total_price) );
 
-				$(this).parents('.js-submit-form').find('.js-del').attr("data-prices", PHP.number_format(total_price, 2) );
+				$(this).parents('.js-submit-form').find('.js-del').attr("data-prices", PHP.number_format(total_price, 2) );*/
 			});
 
 			self.$plus.click(function(){
 				var $input = $(this).parents('.form-flex').find('.js-number');
-				var $button = $(this).parents('.js-submit-form').find('.js-submit');
+				var $button = $(this).parents('.js-form').find('.js-submit');
 				var $value = parseInt($input.val());
 
 				$button.removeAttr('disabled');
@@ -729,7 +751,7 @@ if ( typeof Object.create !== 'function' ) {
 			});
 			self.$remove.click(function(){
 				var $input = $(this).parents('.form-flex').find('.js-number');
-				var $button = $(this).parents('.js-submit-form').find('.js-submit');
+				var $button = $(this).parents('.js-form').find('.js-submit');
 				var $value = parseInt($input.val());
 
 				if( $value !== 0 ){
@@ -745,7 +767,7 @@ if ( typeof Object.create !== 'function' ) {
 			});
 			self.$elem.find('.js-number').change(function(){
 				var val = $(this).val();
-				var $button = $(this).parents('.js-submit-form').find('.js-submit');
+				var $button = $(this).parents('.js-form').find('.js-submit');
 				if( val > 0 ){
 					$button.removeAttr('disabled');
 				}
@@ -754,7 +776,7 @@ if ( typeof Object.create !== 'function' ) {
 				}
 			});
 			self.$del.click(function(){
-				var id = $(this).data("id");
+				var id = $(this).parents('.js-form').data("id");
 				var $prices = $(this).attr('data-prices');
 				self.$elem.find('[data-id='+id+']').remove();
 
@@ -763,15 +785,21 @@ if ( typeof Object.create !== 'function' ) {
 					url: $(this).data("url"),
 					data: {id, id},
 					success: function(res){
+
+						res = JSON.parse(res);
+
+						self.$elem.find('#total').text( PHP.number_format( res.total ) );
+						self.$elem.find('#discount').text( PHP.number_format( res.discount ) );
+						self.$elem.find('#amount').text( PHP.number_format( res.amount ) );
 						Event.showMsg({ text: "ยกเลิกรายการเรียบร้อย",load: true , auto: true });
 					}
 				});
 
-				var price = parseInt( self.$elem.find('#price').text().replace(/,/g,"") ) - parseInt( $prices.replace(/,/g,"") );
+				/* var price = parseInt( self.$elem.find('#price').text().replace(/,/g,"") ) - parseInt( $prices.replace(/,/g,"") );
 				var total = parseInt( self.$elem.find('#total').text().replace(/,/g,"") ) - parseInt( $prices.replace(/,/g,"") );
 
 				self.$elem.find('#price').text( PHP.number_format(price) );
-				self.$elem.find('#total').text( PHP.number_format(total) );
+				self.$elem.find('#total').text( PHP.number_format(total) ); */
 
 				Dialog.close();
 			});

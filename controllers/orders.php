@@ -170,9 +170,10 @@ class Orders extends Controller {
 		$order = $this->model->getSaleOrder($this->me['id'], array('customer'=>$id, 'not_delete'=>true));
 		$this->view->setData('order', $order);
 
-		$total = $this->model->getSummary($order['items']);
-		print_r($total);die;
-		$this->view->setData('total', $total);
+		if( !empty($order['items']) ){
+			$total = $this->model->getSummary($order['items']);
+			$this->view->setData('total', $total);
+		}
 
 		$this->view->setData('topbar', array(
             'title'=>array(
@@ -214,8 +215,10 @@ class Orders extends Controller {
 		$net_price = ($order['net_price'] - $item['prices']) + $total_pro_price;
 		$this->model->updateSaleOrder($order['id'], array('net_price'=>$net_price));
 
-		$arr['message'] = 'อัพเดตเรียบร้อย';
-		echo json_encode($arr);
+		$_order = $this->model->get_saleOrder( $item['sale_orders_id'] );
+		$total = $this->model->getSummary( $_order['items'] );
+
+		echo json_encode($total);
 	}
 	public function del_sale_item($id=null){
 		$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : $id;
@@ -232,8 +235,18 @@ class Orders extends Controller {
 		$checkItem = $this->model->checkItemSaleOrder($order['id']);
 		if( empty($checkItem) ) $this->model->deleteSaleOrder($order['id']);
 
-		$arr['message'] = 'ยกเลิกรายการเรียบร้อยแล้ว';
-		echo json_encode($arr);
+		$total = array(
+			'total'=>0,
+			'discount'=>0,
+			'amount'=>0
+		);
+		if( !empty($checkItem) ){
+			$_order = $this->model->get_saleOrder( $item['sale_orders_id'] );
+			$total = $this->model->getSummary( $_order['items'] );
+		}
+
+		// $arr['message'] = 'ยกเลิกรายการเรียบร้อยแล้ว';
+		echo json_encode($total);
 	}
 	public function confirmOrder($id=null){
 		$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : $id;
