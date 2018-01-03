@@ -15,7 +15,7 @@ foreach ($this->results['lists'] as $key => $value) {
 
 	$li .= '<li class="ui-list-item border-bottom mhs pas anchor clearfix"><a class="anchor clearfix" href="'.URL.'customers/'.$value['id'].'">'.
 
-			'<div class="avatar lfloat icon tac mrm"><i class="icon-user"></i></div>'.
+			'<div class="lfloat icon tac mrm"><i class="icon-home" style="font-size:40px;"></i></div>'.
 
 			'<div class="rfloat content">'.
 				'<div class="spacer"></div>'.

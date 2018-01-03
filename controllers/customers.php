@@ -17,7 +17,7 @@ class Customers extends Controller {
 			$this->view->setData('topbar', array(
             'title'=>array(
                 0 => array(
-                    'text' => '<i class="icon-user"></i> '.$item['name_store']
+                    'text' => '<i class="icon-home"></i> '.$item['name_store']
                 ),
                 1 => array(
                     'text' => $item['sub_code']
@@ -44,7 +44,7 @@ class Customers extends Controller {
 			$results = $this->model->lists( $options );
 
 			$this->view->setData('topbar', array(
-				'title' => array( 0 => 
+				'title' => array( 0 =>
 					array( 'text' => '<i class="icon-users"></i> Customers ('.$results['total'].')' ),
 				),
 			) );

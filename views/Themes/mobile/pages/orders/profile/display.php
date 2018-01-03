@@ -5,17 +5,17 @@
 	</div>
 
 	<div class="web-profile-content post">
-		
+
 		<table class="table-meta">
-			<?php 
+			<?php
 			$a = array();
 			$a[] = array('key'=>'user_code', 'icon'=>'address-book-o', 'label'=>'รหัส');
-			$a[] = array('key'=>'user_name', 'icon'=>'user', 'label'=>'ชื่อร้านค้า');
+			$a[] = array('key'=>'user_name', 'icon'=>'home', 'label'=>'ชื่อร้านค้า');
 			$a[] = array('key'=>'net_price', 'icon'=>'money', 'label'=>'ราคารวม');
 
 			foreach ($a as $key => $value) {
 				if( $value['key']=='net_price' ) {
-					$this->item[$value['key']] = number_format($this->item[$value['key']]);
+					$this->item[$value['key']] = '<span style="color:red;">'.number_format($this->item[$value['key']]).' ฿</span>';
 				}
 				echo '<tr>
 						<td class="label">
@@ -53,7 +53,7 @@
 				<tfoot>
 					<tr>
 						<td class="tac fwb">ยอดรวมเงิน <?=$num?> รายการ</td>
-						<td colspan="3" class="tac fwb"><?=$this->item['net_price']?></td>
+						<td colspan="4" class="tar fwb" style="color:red; font-size:20px;"><?=$this->item['net_price']?>&nbsp;</td>
 					</tr>
 				</tfoot>
 			</table>
@@ -69,7 +69,7 @@
 		<?php if( $this->item['process']['id'] == 9 ) { ?>
 		<div class="web-profile-header">
 			<div class="mtl" style="font-size: 18px;">
-				<?php 
+				<?php
 				$radio = '<div>
 					<label class="radio"><input type="radio" name="term_of_payment" value="1"> เงินสด</label>
 				</div>

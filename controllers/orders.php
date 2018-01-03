@@ -17,7 +17,7 @@ class Orders extends Controller {
             if( empty($item) ) $this->error();
 
             $this->view->setData('topbar', array(
-                'title' => array( 0 => 
+                'title' => array( 0 =>
                     array( 'text' => '<i class="icon-cube"></i> Orders ('.$item['code'].')' ),
                 ),
                 'nav' => array(
@@ -42,7 +42,7 @@ class Orders extends Controller {
             $results = $this->model->lists( $options );
 
             $this->view->setData('topbar', array(
-                'title' => array( 0 => 
+                'title' => array( 0 =>
                     array( 'text' => '<i class="icon-cube"></i> Orders ('.$results['total'].')' ),
                 ),
             ) );
@@ -78,7 +78,7 @@ class Orders extends Controller {
         $this->view->setData('topbar', array(
             'title'=>array(
                 0 => array(
-                    'text' => '<i class="icon-user"></i> '.$customer['name_store']
+                    'text' => '<i class="icon-home"></i> '.$customer['name_store']
                 ),
                 1 => array(
                     'text' => $customer['sub_code']
@@ -177,7 +177,7 @@ class Orders extends Controller {
 		$this->view->setData('topbar', array(
             'title'=>array(
                 0 => array(
-                    'text' => '<i class="icon-user"></i> '.$customer['name_store']
+                    'text' => '<i class="icon-home"></i> '.$customer['name_store']
                 ),
                 1 => array(
                     'text' => $customer['sub_code']

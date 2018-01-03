@@ -1,7 +1,7 @@
 <?php
 
 $f = new Form();
-$form = $f->create(); 
+$form = $f->create();
 
     // attr, options
 $form   ->addClass('login-form-container form-insert form-large')
@@ -10,7 +10,7 @@ $form   ->addClass('login-form-container form-insert form-large')
 
     // set field
 $form   ->field("email")
-        ->label('<i class="icon-user"></i>')
+        ->label('<i class="icon-home"></i>')
         ->placeholder("Username")
         ->addClass('inputtext')
         ->required(true)
@@ -74,7 +74,7 @@ $image = $this->getPage('image');
 
             <div class="subtext mvm"></div>
 
-            
+
         </div>
         <!-- end: login-header -->
 
@@ -92,7 +92,7 @@ $image = $this->getPage('image');
             <!-- <a href="<?=URL?>forgot_password" class="forgot_password"><span>Forgot password?</span></a> -->
         </div>
         <!-- end: login-footer -->
-        
+
     </div>
     <!-- end: content-wrapper -->
 
