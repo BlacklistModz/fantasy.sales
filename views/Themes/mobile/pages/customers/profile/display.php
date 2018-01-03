@@ -1,5 +1,9 @@
 <div class="clearfix">
 	<div class="rfloat pam">
+		<?php if( !empty($this->item['line_id']) ) { ?>
+		<a href="http://line.me/ti/p/~<?=$this->item['line_id']?>" class="btn btn-green btn-jumbo" style="font-size: 30px;"><i class="icon-phone"></i></a>
+		<?php } ?>
+		<a href="tel:<?=$this->item['phone']?>" class="btn btn-blue btn-jumbo" style="font-size: 30px;"><i class="icon-phone"></i></a>
 		<a href="<?=URL?>orders/create/<?=$this->item['id']?>" class="btn btn-green btn-jumbo" style="font-size: 30px;"><i class="icon-cart-plus"></i></a>
 	</div>
 	<div class="uiBoxGray pal">
