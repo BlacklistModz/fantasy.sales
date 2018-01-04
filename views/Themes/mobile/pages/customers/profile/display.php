@@ -10,11 +10,11 @@
 	<div class="uiBoxGray pal">
 		<ui style="font-size: 16px;">
 			<h3 class="mbm fwb"><i class="icon-home"></i> ข้อมูลลูกค้า</h3>
-			<li class="">
-				<span class="fwb"><i class="icon-address-card"></i> ชื่อร้าน : </span> <?=$this->item['name_store']?>
-			</li>
 			<li class="mts">
 				<span class="fwb"><i class="icon-info-circle"></i> รหัส : </span> <?=$this->item['sub_code']?>
+			</li>
+			<li class="mts">
+				<span class="fwb"><i class="icon-address-card"></i> ชื่อร้าน : </span> <?=$this->item['name_store']?>
 			</li>
 			<li class="mts">
 				<?php
