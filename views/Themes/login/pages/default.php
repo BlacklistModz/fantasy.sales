@@ -10,7 +10,7 @@ $form   ->addClass('login-form-container form-insert form-large')
 
     // set field
 $form   ->field("email")
-        ->label('<i class="icon-home"></i>')
+        ->label('<i class="icon-user"></i>')
         ->placeholder("Username")
         ->addClass('inputtext')
         ->required(true)
