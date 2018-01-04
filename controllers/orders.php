@@ -388,10 +388,10 @@ class Orders extends Controller {
 						'itm_remark'=>null
 					);
 					$this->model->setItem($data);
-					$total_prices += $prices;
+					// $total_prices += $prices;
 				}
 
-				$this->model->update($_id, array('ord_code'=>$order_code, 'ord_net_price'=>$total_prices));
+				$this->model->update($_id, array('ord_code'=>$order_code));
 				$this->model->updateSaleOrder($order['id'], array('deleted_at'=>date("c")));
 
 				$arr['message'] = 'ยืนยันการสั่งซื้อเรียบร้อย';
