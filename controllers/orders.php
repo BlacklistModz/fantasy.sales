@@ -385,7 +385,9 @@ class Orders extends Controller {
 						'itm_discount'=>$value['discount'],
 						'itm_prices'=>$value['prices'],
 						'itm_status'=>'A',
-						'itm_remark'=>null
+						'itm_remark'=>null,
+						'created_at' => date("c"),
+						'updated_at' => date("c")
 					);
 					$this->model->setItem($data);
 					// $total_prices += $prices;
