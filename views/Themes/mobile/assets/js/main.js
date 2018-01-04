@@ -716,7 +716,7 @@ if ( typeof Object.create !== 'function' ) {
 						self.$elem.find('#total').text( PHP.number_format( res.total ) );
 						self.$elem.find('#discount').text( PHP.number_format( res.discount ) );
 						self.$elem.find('#amount').text( PHP.number_format( res.amount ) );
-						// Event.showMsg({ text: "อัพเดตเรียบร้อย",load: true , auto: true });
+						Event.showMsg({ text: "อัพเดตเรียบร้อย",load: true , auto: true });
 					}
 				});
 
@@ -741,7 +741,7 @@ if ( typeof Object.create !== 'function' ) {
 
 			self.$plus.click(function(){
 				var $input = $(this).parents('.form-flex').find('.js-number');
-				var $button = $(this).parents('.js-form').find('.js-submit');
+				var $button = $(this).parents('.js-form').find('.submit');
 				var $value = parseInt($input.val());
 
 				$button.removeAttr('disabled');
@@ -751,7 +751,7 @@ if ( typeof Object.create !== 'function' ) {
 			});
 			self.$remove.click(function(){
 				var $input = $(this).parents('.form-flex').find('.js-number');
-				var $button = $(this).parents('.js-form').find('.js-submit');
+				var $button = $(this).parents('.js-form').find('.submit');
 				var $value = parseInt($input.val());
 
 				if( $value !== 0 ){
@@ -767,7 +767,7 @@ if ( typeof Object.create !== 'function' ) {
 			});
 			self.$elem.find('.js-number').change(function(){
 				var val = $(this).val();
-				var $button = $(this).parents('.js-form').find('.js-submit');
+				var $button = $(this).parents('.js-form').find('.submit');
 				if( val > 0 ){
 					$button.removeAttr('disabled');
 				}
@@ -777,7 +777,7 @@ if ( typeof Object.create !== 'function' ) {
 			});
 			self.$del.click(function(){
 				var id = $(this).parents('.js-form').data("id");
-				var $prices = $(this).attr('data-prices');
+				// var $prices = $(this).attr('data-prices');
 				self.$elem.find('[data-id='+id+']').remove();
 
 				 $.ajax({

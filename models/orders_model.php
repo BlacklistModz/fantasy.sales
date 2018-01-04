@@ -427,7 +427,7 @@ class Orders_model extends Model{
         }
         return $data;
     }
-    public function setItemSaleOrder($data){
+    public function setItemSaleOrder(&$data){
         $data['updated_at'] = date("c");
         if( !empty($data['id']) ){
             $id = $data['id'];
@@ -437,6 +437,7 @@ class Orders_model extends Model{
         else{
             $data['created_at'] = date("c");
             $this->db->insert("sale_order_items", $data);
+            $data['id'] = $this->db->lastInsertId();
         }
     }
     public function getItemSale($id){
@@ -503,25 +504,29 @@ class Orders_model extends Model{
 
         foreach ($discount as $key => $value) {
             if( $value['qty'] >= 6 ){
-                switch ($value['qty']) {
-                    case 72:
+                if( $value['qty'] >= 72 ){
                     $price = $value['qty']*$value['discount']["price_6"];
-                    break;
-                    case 48:
+                    $data['id'][$key] = $value['discount']['price_6'];
+                }
+                elseif( $value['qty'] >= 48 ){
                     $price = $value['qty']*$value['discount']["price_5"];
-                    break;
-                    case 36:
+                    $data['id'][$key] = $value['discount']['price_5'];
+                }
+                elseif( $value['qty'] >= 36 ){
                     $price = $value['qty']*$value['discount']["price_4"];
-                    break;
-                    case 24:
+                    $data['id'][$key] = $value['discount']['price_4'];
+                }
+                elseif( $value['qty'] >= 24 ){
                     $price = $value['qty']*$value['discount']["price_3"];
-                    break;
-                    case 12:
+                    $data['id'][$key] = $value['discount']['price_3'];
+                }
+                elseif( $value['qty'] >= 12 ){
                     $price = $value['qty']*$value['discount']["price_2"];
-                    break;
-                    default:
+                    $data['id'][$key] = $value['discount']['price_2'];
+                }
+                else{
                     $price = $value['qty']*$value['discount']["price_1"];
-                    break;
+                    $data['id'][$key] = $value['discount']['price_1'];
                 }
 
                 if( empty($total_price[$key]) ){
@@ -544,6 +549,18 @@ class Orders_model extends Model{
         $data['discount'] = $discount_total;
         $data['amount'] = $amount;
 
+        return $data;
+    }
+
+    public function getTotal($item=array()){
+        $data['total'] = 0;
+        $data['discount'] = 0;
+        $data['amount'] = 0;
+        foreach ($item as $key => $value) {
+            $data['total'] += $value['price'] * $value['quantity'];
+            $data['discount'] += $value['discount'] * $value['quantity'];
+            $data['amount'] += $value['prices'];
+        }
         return $data;
     }
 }

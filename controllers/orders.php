@@ -108,15 +108,15 @@ class Orders extends Controller {
 			if( empty($item) ) $this->error();
 		}
 
-		$pro_price = !empty($item['pricing']) ? $item['pricing']['frontend'] : $item['pds_price_frontend'];
+		$pro_price = !empty($item['pricing']) ? $item['pricing']['frontend'] : 0;
 		$total_pro_price = $pro_price * $_POST["quantity"];
 
 		$order = $this->model->getSaleOrder($this->me['id'], array('customer'=>$_POST["cus_id"], 'not_delete'=>true));
 
 		if( !empty($order) ){
 			$id = $order['id'];
-			$data['net_price'] = $order['net_price'] + $total_pro_price;
-			$this->model->updateSaleOrder($id, $data);
+			// $data['net_price'] = $order['net_price'] + $total_pro_price;
+			// $this->model->updateSaleOrder($id, $data);
 		}
 		else{
 			$customer = $this->model->query('customers')->get($_POST["cus_id"]);
@@ -144,6 +144,7 @@ class Orders extends Controller {
 			);
 			$_item = $this->model->getItemSaleOrder($id, $_POST["id"]);
 			if( !empty($_item) ){
+
 				$postData['id'] = $_item['id'];
 				$postData['quantity'] += $_item['quantity'];
 				// $postData['price'] = $pro_price;
@@ -151,6 +152,40 @@ class Orders extends Controller {
 			}
 
 			$this->model->setItemSaleOrder($postData);
+
+			if( empty($_item) ){
+				$_item['id'] = $postData['id'];
+			}
+			$_item['quantity'] = $postData['quantity'];
+
+			$_order = $this->model->get_saleOrder($id);
+			if( !empty($_order['items']) && !empty($_item) ){
+				$total = $this->model->getSummary($_order['items']);
+				$_discount = $this->model->query('discounts')->getDiscountItem($_POST["id"]);
+				if( !empty($_discount) ){
+					foreach ($total['id'] as $key => $value) {
+						if( $_discount['id'] == $key ){
+							$postData = array(
+								'id'=>$_item['id'],
+								'discount'=>$pro_price - $value,
+								'prices'=>$value * $_item['quantity']
+							);
+							$this->model->setItemSaleOrder($postData);
+							break;
+						}
+					}
+				}
+			}
+
+			$n_order = $this->model->get_saleOrder($id);
+			$g_total = $this->model->getTotal($n_order['items']);
+
+			$data = array(
+				'net_price'=>$g_total['amount'],
+				'price'=>$g_total['total'],
+				'discount'=>$g_total['discount']
+			);
+			$this->model->updateSaleOrder($id, $data);
 		}
 
 		$arr['message'] = 'เลือกสินค้าเรียบร้อย';
@@ -169,11 +204,6 @@ class Orders extends Controller {
 
 		$order = $this->model->getSaleOrder($this->me['id'], array('customer'=>$id, 'not_delete'=>true));
 		$this->view->setData('order', $order);
-
-		if( !empty($order['items']) ){
-			$total = $this->model->getSummary($order['items']);
-			$this->view->setData('total', $total);
-		}
 
 		$this->view->setData('topbar', array(
             'title'=>array(
@@ -212,13 +242,56 @@ class Orders extends Controller {
 		$postData['prices'] = $total_pro_price;
 		$this->model->setItemSaleOrder($postData);
 
-		$net_price = ($order['net_price'] - $item['prices']) + $total_pro_price;
+		$g_order = $this->model->get_saleOrder($item['sale_orders_id']);
+		$_total = $this->model->getSummary($g_order['items']);
+		$_discount = $this->model->query('discounts')->getDiscountItem($item["products_id"]);
+		if( !empty($_discount) ){
+			foreach ($_total['id'] as $key => $value) {
+				if( $_discount['id'] == $key ){
+					$postData = array(
+						'id'=>$item['id'],
+						'discount'=>$pro_price - $value,
+						'prices'=>$value * $_POST['quantity']
+					);
+					$this->model->setItemSaleOrder($postData);
+				}
+			}
+		}
+
+		/* $_order = $this->model->itemsSaleOrder($item['sale_orders_id']);
+		$g_summary = $this->model->getSummary($_order);
+		foreach ($_order as $key => $value) {
+			$_dis = $this->model->query('discounts')->getDiscountItem($value['products_id']);
+			if( !empty($_dis) ){
+				foreach ($g_summary['id'] as $id => $price) {
+					if( $id == $_dis['id'] ){
+						$itemData = array(
+							'id' => $value['id'],
+							'discount' => $value['price'] - $price
+						);
+						$this->model->setItemSaleOrder($itemData);
+					}
+				}
+			}
+		} */
+
+		$_items = $this->model->itemsSaleOrder($item['sale_orders_id']);
+		$total = $this->model->getTotal($_items);
+		$orderData = array(
+			'price' => $total['total'],
+			'discount' => $total['discount'],
+			'net_price' => $total['amount']
+		);
+		$this->model->updateSaleOrder($order['id'], $orderData);
+		echo json_encode($total);
+
+		/* $net_price = ($order['net_price'] - $item['prices']) + $total_pro_price;
 		$this->model->updateSaleOrder($order['id'], array('net_price'=>$net_price));
 
 		$_order = $this->model->get_saleOrder( $item['sale_orders_id'] );
 		$total = $this->model->getSummary( $_order['items'] );
 
-		echo json_encode($total);
+		echo json_encode($total);*/
 	}
 	public function del_sale_item($id=null){
 		$id = isset($_REQUEST["id"]) ? $_REQUEST["id"] : $id;
@@ -229,7 +302,7 @@ class Orders extends Controller {
 		$order = $this->model->get_saleOrder($item['sale_orders_id']);
 		if( empty($order) ) $this->error();
 
-		$this->model->updateSaleOrder($order['id'], array('net_price'=>$order['net_price'] - $item['prices']));
+		// $this->model->updateSaleOrder($order['id'], array('net_price'=>$order['net_price'] - $item['prices']));
 		$this->model->unsetItemSaleOrder($id);
 
 		$checkItem = $this->model->checkItemSaleOrder($order['id']);
@@ -241,8 +314,15 @@ class Orders extends Controller {
 			'amount'=>0
 		);
 		if( !empty($checkItem) ){
-			$_order = $this->model->get_saleOrder( $item['sale_orders_id'] );
-			$total = $this->model->getSummary( $_order['items'] );
+			$_order = $this->model->get_saleOrder($item['sale_orders_id']);
+			$total = $this->model->getTotal($_order['items']);
+
+			$orderData = array(
+				'price' => $total['total'],
+				'discount' => $total['discount'],
+				'net_price' => $total['amount']
+			);
+			$this->model->updateSaleOrder($order['id'], $orderData);
 		}
 
 		// $arr['message'] = 'ยกเลิกรายการเรียบร้อยแล้ว';
@@ -258,6 +338,9 @@ class Orders extends Controller {
 		if( empty($_POST['term_of_payment']) ){
 			$arr['error']['term_of_payment'] = 'กรุณาเลือกประเภทการจ่ายเงินสด';
 		}
+
+		// $total = $this->model->getSummary( $order['items'] );
+
 		if( empty($arr['error']) ){
 			$postData = array(
 				'site_id'=>0,
@@ -274,7 +357,7 @@ class Orders extends Controller {
 				'ord_status'=>'A',
 				'order_note'=>$_POST["order_note"],
 				'ord_net_price'=>$order['net_price'],
-				'ord_discount_extra'=>'0.00',
+				'ord_discount_extra'=>$order['discount'],
 				'ord_tax'=>'0.00'
 			);
 			$this->model->insert($postData);
@@ -286,7 +369,7 @@ class Orders extends Controller {
 					$product = $this->model->query('products')->get($value['products_id']);
 
 					/* FIX PRICE ITEMS */
-					$prices = $value['price'] * $value['quantity'];
+					// $prices = $value['price'] * $value['quantity'];
 
 					$data = array(
 						'site_id'=>0,
@@ -300,7 +383,7 @@ class Orders extends Controller {
 						'itm_unit'=>'1',
 						'itm_price'=>$value['price'],
 						'itm_discount'=>$value['discount'],
-						'itm_prices'=>$prices,
+						'itm_prices'=>$value['prices'],
 						'itm_status'=>'A',
 						'itm_remark'=>null
 					);

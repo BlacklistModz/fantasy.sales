@@ -62,15 +62,15 @@
 			<table>
 				<tr>
 					<td width="50%" align="left" class="fwb">รวมเงิน : </td>
-					<td width="50%" align="left"><span id="total"><?= !empty($this->total) ? number_format($this->total['total']) : "0" ?></span></td>
+					<td width="50%" align="left"><span id="total"><?= !empty($this->order) ? number_format($this->order['price']) : "0" ?></span></td>
 				</tr>
 				<tr>
 					<td width="50%" align="left" class="fwb">หักส่วนลด : </td>
-					<td width="50%" align="left"><span id="discount"><?= !empty($this->total) ? number_format($this->total['discount']) : "0" ?></span></td>
+					<td width="50%" align="left"><span id="discount"><?= !empty($this->order) ? number_format($this->order['discount']) : "0" ?></span></td>
 				</tr>
 				<tr>
 					<td width="50%" align="left" class="fwb">ยอดสุทธิ</td>
-					<td width="50%" align="left" class="fwb" style="color:red;"><span id="amount"><?= !empty($this->total) ? number_format($this->total['amount']) : "0" ?></span></td>
+					<td width="50%" align="left" class="fwb" style="color:red;"><span id="amount"><?= !empty($this->order) ? number_format($this->order['net_price']) : "0" ?></span></td>
 				</tr>
 			</table>
 		</div>
