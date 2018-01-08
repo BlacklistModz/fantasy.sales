@@ -34,6 +34,30 @@ class Reports_Model extends Model{
     	$results = $this->db->select("SELECT * FROM orders {$w}", $w_arr);
     	foreach ($results as $key => $value) {
     		$date = date("Y-m-d", strtotime($value['ord_dateCreate']));
+
+            if( empty($data[$date]['total']) ){
+                $data[$date]['total'] = 0;
+            }
+            if( empty($data[$date]['amount']) ){
+                $data[$date]['amount'] = 0;
+            }
+            if( empty($data[$date]['payment']) ){
+                $data[$date]['payment'] = 0;
+            }
+            if( empty($data[$date]['comission']) ){
+                $data[$date]['comission'] = 0;
+            }
+            $data[$date]['amount'] += $value['ord_net_price'];
+            $data[$date]['total']++;
+            
+            $payment = $this->query('orders')->listsPayment($value['id']);
+            if( !empty($payment) ){
+                foreach ($payment as $key => $value) {
+                    $data[$date]['payment'] += $value['amount'];
+                    $data[$date]['comission'] += $value['comission_amount'];
+                }
+            }
     	}
+        return $data;
     }
 }
