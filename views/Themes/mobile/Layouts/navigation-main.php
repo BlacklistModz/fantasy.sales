@@ -28,6 +28,10 @@ $menu1[] = array('key'=>'customers', 'text'=>'Customers', 'link'=>$url.'customer
 $menu1[] = array('key'=>'orders', 'text'=>'Order list', 'link'=>$url.'orders', 'icon'=>'shopping-basket');
 echo $this->fn->manage_nav($menu1);
 
+#reports
+$report[] = array('key'=>'report_orders', 'text'=>'Sale Report', 'link'=>$url.'reports/orders', 'icon'=>'money');
+echo $this->fn->manage_nav($report);
+
 #setting
 $setting[] = array('key'=>'settings', 'text'=>'เปลี่ยนรหัสผ่าน', 'link'=>$url.'me/change_password', 'icon'=>'key');
 echo $this->fn->manage_nav($setting);

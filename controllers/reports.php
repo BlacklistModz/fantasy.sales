@@ -97,4 +97,19 @@ class Reports extends Controller {
 
         $this->view->render('reports/revenue/sections/order-total');
     }
+
+    public function orders(){
+        $month = isset($_REQUEST["month"]) ? $_REQUEST["month"] : date("m");
+        $year = isset($_REQUEST["year"]) ? $_REQUEST["year"] : date("Y");
+
+        $options = array(
+            'sale'=>$this->me['sale_code'],
+            'month'=>$month,
+            'year'=>$year,
+            'process'=>3
+        );
+
+        $results = $this->model->summaryOrder( $options );
+        return $results;
+    }
 }
