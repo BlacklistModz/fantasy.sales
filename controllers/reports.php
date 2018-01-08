@@ -99,8 +99,22 @@ class Reports extends Controller {
     }
 
     public function orders(){
-        $month = isset($_REQUEST["month"]) ? $_REQUEST["month"] : date("m");
+        $month = isset($_REQUEST["month"]) ? sprintf("%02d", $_REQUEST["month"]) : date("m");
         $year = isset($_REQUEST["year"]) ? $_REQUEST["year"] : date("Y");
+
+        $this->view->setData('topbar', array(
+            'title' => array( 0 =>
+                array( 'text' => '<i class="icon-money"></i> Sale Report' ),
+            ),
+            'nav' => array(
+                0 => array(
+                                    // 'type' => 'link',
+                    'icon' => 'icon-remove',
+                                    // 'text' => 'Cancel',
+                    'url' => URL.'orders'
+                ),
+            )
+        ) );
 
         $options = array(
             'sale'=>$this->me['sale_code'],
@@ -109,7 +123,11 @@ class Reports extends Controller {
             'process'=>3
         );
 
+        $this->view->setData('month', $month);
+        $this->view->setData('year', $year);
+
         $results = $this->model->summaryOrder( $options );
-        return $results;
+        $this->view->setData('results', $results);
+        $this->view->render('reports/orders');
     }
 }
