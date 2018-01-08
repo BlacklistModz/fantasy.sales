@@ -9,7 +9,7 @@
 </style>
 
 <div class="row clearfix mtl">
-	<div class="lfloat"><h3><i class="icon-cubes"></i> <?=$this->item['name_th']?></h3></div>
+	<div class="lfloat"><h3><i class="icon-shopping-basket"></i> <?=$this->item['name_th']?></h3></div>
 	<div class="rfloat" role="search">
 		<form class="form-search" action="" id="global-nav-search">
 			<label class="visuallyhidden" for="search-query">Search query</label>
@@ -22,8 +22,8 @@
 
 <div class="wrapper web-lists-wrap active posts">
 	<ul class="ui-list clearfix" role=listsbox>
-		<?php 
-		foreach ($this->results['lists'] as $key => $value) { 
+		<?php
+		foreach ($this->results['lists'] as $key => $value) {
 			$image = !empty($value['image_url']) ? '<img src="'.$value['image_url'].'" />':'';
 		?>
 		<li class="ui-list-item border-bottom mhs pas anchor clearfix">
@@ -36,7 +36,7 @@
 				</span>
 			</div>
 			<div class="content">
-				
+
 					<div class="massages">
 					<div class="ui-score"></div>
 					<div class="title fwb" style="font-size: 18px;"><?=$value['pds_name']?></div>
