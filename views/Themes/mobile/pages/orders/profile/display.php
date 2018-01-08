@@ -46,7 +46,7 @@
 							<td class="tac"><?=number_format($value['qty'])?></td>
 							<td class="tac"><?=number_format($value['price'])?></td>
 							<td class="tac"><?=number_format($value['discount'])?></td>
-							<td class="tac"><?=number_format($value['balance'])?></td>
+							<td class="tar"><?=number_format($value['balance'])?>&nbsp;</td>
 						</tr>
 					<?php } ?>
 				</tbody>
