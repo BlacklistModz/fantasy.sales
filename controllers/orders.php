@@ -36,7 +36,8 @@ class Orders extends Controller {
 		else{
 			$options = array(
 				'sort'=>'ord_dateCreate',
-				'dir'=>'DESC'
+				'dir'=>'DESC',
+				'payment'=>true
 			);
 			$options['sale'] = !empty($this->me['sale_code']) ? $this->me['sale_code'] : '';
             $results = $this->model->lists( $options );

@@ -29,6 +29,7 @@ $menu1[] = array('key'=>'orders', 'text'=>'Order list', 'link'=>$url.'orders', '
 echo $this->fn->manage_nav($menu1);
 
 #reports
+$report[] = array('key'=>'report_due', 'text'=>'Sale Due', 'link'=>$url.'reports/due', 'icon'=>'handshake-o');
 $report[] = array('key'=>'report_orders', 'text'=>'Sale Report', 'link'=>$url.'reports/orders', 'icon'=>'money');
 echo $this->fn->manage_nav($report);
 

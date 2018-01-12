@@ -3,9 +3,19 @@
 $li = '';
 foreach ($this->results['lists'] as $key => $value) {
 
+	if( $value['balance'] == $value['net_price'] ){
+		$color = '#ff0000';
+	}
+	elseif( empty($value['balance']) ){
+		$color = '#0000ff';
+	}
+	else{
+		$color = '#ffc800';
+	}
+
 	$li .= '<li class="ui-list-item border-bottom mhs pas"><a class="anchor clearfix" href="'.URL.'orders/'.$value['id'].'">'.
 
-			'<div class="lfloat icon tac mrm"><i class="icon-shopping-basket" style="font-size:40px;"></i></div>'.
+			'<div class="lfloat icon tac mrm"><i class="icon-shopping-basket" style="font-size:40px; color:'.$color.'"></i></div>'.
 			'<div class="rfloat fwb">
 				<button class="btn btn-small" style="background-image: -webkit-linear-gradient(top, '.$value['process']['color'].', '.$value['process']['color'].'); color:#fff">'.$value['process']['name'].'</button>
 			</div>'.
