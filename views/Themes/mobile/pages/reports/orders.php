@@ -32,8 +32,8 @@
 				<tr>
 					<th width="10%">วันที่</th>
 					<th width="10%">Order</th>
-					<th width="30%">ยอดรวม</th>
-					<th width="30%">ยอดรับเงิน</th>
+					<th width="30%">ยอดขาย</th>
+					<th width="30%">ยอดรับ</th>
 					<th width="20%">COMS</th>
 				</tr>
 			</thead>
