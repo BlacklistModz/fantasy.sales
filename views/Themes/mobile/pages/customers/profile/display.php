@@ -88,7 +88,12 @@
 				<?php
 				if( !empty($this->item['orders']) ) {
 					$num=1;
-				foreach ($this->item['orders'] as $key => $value) { ?>
+					$sum_price=0;
+					$sum_balance=0;
+				foreach ($this->item['orders'] as $key => $value) {
+					$sum_price+=$value['net_price'];
+					$sum_balance+=$value['balance'];
+					?>
 				<tr>
 					<tr>
 					<td class="tac"><?=$num?></td>
@@ -104,6 +109,13 @@
 					if( !empty($_GET["due"]) ) echo '<td colspan="4" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
 					else echo '<td colspan="3" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
 				} ?>
+				<?php
+				if( !empty($_GET["due"]) )
+					echo '<td colspan="2" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td><td class="tar" style="color:#ff0000;"><b>'.number_format($sum_balance).' ฿</b>&nbsp;</td>';
+				else
+					echo '<td colspan="2" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td>';
+				?>
+
 			</tbody>
 		</table>
 	</div>
