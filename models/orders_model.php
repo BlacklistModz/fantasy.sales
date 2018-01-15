@@ -563,4 +563,23 @@ class Orders_model extends Model{
         }
         return $data;
     }
+
+    public function updateAllDiscount($dis_id=null, $data=array()){
+        $results = $this->db->select("SELECT item_parent_id FROM discounts_items WHERE item_dis_id={$dis_id}");
+        $item = $this->itemsSaleOrder($data['order']);
+        foreach ($item as $i => $_item) {
+            foreach ($results as $key => $value) {
+                $product = $this->query('products')->get($_item['products_id']);
+                $pro_price = !empty($product['pricing']) ? $product['pricing']['frontend'] : 0;
+                if( $_item['products_id'] == $value['item_parent_id'] ){
+                    $postData = array(
+                        'id' => $_item['id'],
+                        'discount'=>$data['discount'],
+                        'prices'=> ($pro_price - $data['discount']) * $_item['quantity']
+                    );
+                    $this->setItemSaleOrder($postData);
+                }
+            }
+        }
+    }
 }
