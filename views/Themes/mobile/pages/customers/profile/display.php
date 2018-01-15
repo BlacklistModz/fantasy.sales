@@ -7,6 +7,7 @@
 		<a href="tel:<?=$this->item['phone']?>" class="btn btn-blue btn-large" style="font-size: 30px; height:50px; width:50px; padding-top:9px; padding-left:9px;"><i class="icon-phone"></i></a>
 		<a href="<?=URL?>orders/create/<?=$this->item['id']?>" class="btn btn-green btn-large" style="font-size:30px; height:50px; width:50px; padding-top:9px; padding-left:9px;"><i class="icon-cart-plus"></i></a>
 	</div>
+
 	<div class="uiBoxGray pal">
 		<ui style="font-size: 16px;">
 			<h3 class="mbm fwb"><i class="icon-home"></i> ข้อมูลลูกค้า</h3>
@@ -53,8 +54,16 @@
 				}
 				?>
 			</li>
+			<li>
+				<div class="clearfix">
+					<br>
+					<a href="<?=URL?>customers/<?=$this->item['id']?>?due=1" class="rfloat btn btn-red btn-large" >ดูยอดค้างจ่าย</a>
+				</div>
+			</li>
 		</ui>
+
 	</div>
+
 	<div class="clearfix mtm">
 		<table class="table table-bordered">
 			<thead>
@@ -72,8 +81,8 @@
 				<tr>
 					<tr>
 					<td class="tac"><?=$num?></td>
-					<td class="mls"><?=$value['code']?></td>
-					<td class="tar"><?=number_format($value['price'])?></td>
+					<td class="mls">&nbsp;<?=$value['code']?></td>
+					<td class="tar"><?=number_format($value['price'])?>&nbsp;</td>
 				</tr>
 				<?php $num++; }
 				}
