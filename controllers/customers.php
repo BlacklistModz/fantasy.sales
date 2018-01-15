@@ -11,8 +11,12 @@ class Customers extends Controller {
 		$this->view->setPage('title', 'Customers');
 
 		if( !empty($id) ){
-			$item = $this->model->get($id, array('orders'=>true));
+			$options = array('orders'=>true);
+			if( isset($_GET['due']) ) $options['due'] = true;
+
+			$item = $this->model->get($id, $options);
 			if( empty($item) ) $this->error();
+
 
 			$this->view->setData('topbar', array(
             'title'=>array(

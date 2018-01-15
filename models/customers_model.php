@@ -45,8 +45,8 @@ class Customers_Model extends Model{
             foreach ($arrQ as $key => $value) {
                 $wq .= !empty( $wq ) ? " OR ":'';
                 $wq .= "sub_code LIKE :q{$key}
-                        OR name_store LIKE :q{$key} 
-                        OR phone LIKE :q{$key} 
+                        OR name_store LIKE :q{$key}
+                        OR phone LIKE :q{$key}
                         OR phone_other LIKE :q{$key}";
                 $where_arr[":q{$key}"] = "%{$value}%";
                 $where_arr[":s{$key}"] = "{$value}%";
@@ -69,7 +69,7 @@ class Customers_Model extends Model{
 
         if( ($options['pager']*$options['limit']) >= $arr['total'] ) $options['more'] = false;
         $arr['options'] = $options;
-        
+
         return $arr;
     }
     public function buildFrag($results, $options=array()) {
@@ -94,7 +94,7 @@ class Customers_Model extends Model{
     public function convert($data , $options=array()){
 
         if( !empty($options['orders']) ){
-            $data['orders'] = $this->listsOrders($data['id']);
+            $data['orders'] = $this->listsOrders($data['id'], $options);
         }
 
         $data['address'] = $this->getAddress($data['id']);
@@ -141,10 +141,19 @@ class Customers_Model extends Model{
     }
 
     #LISTS ORDERS
-    public function listsOrders($id){
-        $data = $this->db->select("SELECT id, ord_code AS code, ord_sale_code AS sale_code, ord_type_commission AS comission, term_of_payment AS payments, ord_net_price AS price, ord_dateCreate AS date FROM orders WHERE ord_customer_id=:id", array(":id"=>$id));
+    public function listsOrders($id, $options=array()){
+        $w = 'ord_customer_id=:id';
+        $w_arr = array(':id'=>$id);
 
-        $arr = $this->query('orders')->buildFrag($data);
+        if( !empty($options["due"]) ){
+          $w .= !empty($w) ? " AND " : "";
+          $w .= "(SELECT COALESCE(SUM(pay_amount), 0) FROM payments WHERE pay_order_id=orders.id) < orders.ord_net_price";
+        }
+
+        $w = !empty($w) ? "WHERE {$w}" : "";
+        $data = $this->db->select("SELECT id, ord_code AS code, ord_sale_code AS sale_code, ord_type_commission AS comission, term_of_payment AS payments, ord_net_price AS net_price, ord_dateCreate AS date FROM orders {$w}", $w_arr);
+        $arr = $this->query('orders')->buildFrag($data, array('payment'=>true));
+        // print_r($arr);die;
         return $arr;
     }
 }

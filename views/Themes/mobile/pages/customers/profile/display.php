@@ -57,7 +57,11 @@
 			<li>
 				<div class="clearfix">
 					<br>
-					<a href="<?=URL?>customers/<?=$this->item['id']?>?due=1" class="rfloat btn btn-red btn-large" >ดูยอดค้างจ่าย</a>
+					<?php if( !empty($_GET["due"]) ){ ?>
+						<a href="<?=URL?>customers/<?=$this->item['id']?>" class="rfloat btn btn-blue btn-large" >ดูบิลทั้งหมด</a>
+					<?php } else { ?>
+						<a href="<?=URL?>customers/<?=$this->item['id']?>?due=1" class="rfloat btn btn-red btn-large" >ดูยอดค้างจ่าย</a>
+					<?php } ?>
 				</div>
 			</li>
 		</ui>
@@ -65,12 +69,19 @@
 	</div>
 
 	<div class="clearfix mtm">
+		<?php if( !empty($_GET["due"]) ){ ?>
+		<h3 width="20" style="color:#ff0000; margin-bottom:10px;">&nbsp;ยอดค้างจ่าย</h3>
+		<?php } ?>
+
 		<table class="table table-bordered">
 			<thead>
 				<tr>
 					<th width="15%">#</th>
-					<th width="60%">ORDER</th>
-					<th width="25%">ราคา</th>
+					<th width="45%">ORDER</th>
+					<th width="20%">ราคา</th>
+					<?php if( !empty($_GET["due"]) ){ ?>
+					<th width="20" style="color:#ff0000;">ยอดค้างจ่าย</th>
+					<?php } ?>
 				</tr>
 			</thead>
 			<tbody>
@@ -82,12 +93,16 @@
 					<tr>
 					<td class="tac"><?=$num?></td>
 					<td class="mls">&nbsp;<?=$value['code']?></td>
-					<td class="tar"><?=number_format($value['price'])?>&nbsp;</td>
+					<td class="tar"><?=number_format($value['net_price'])?>&nbsp;</td>
+					<?php if( !empty($_GET["due"]) ){ ?>
+						<td class="tar" style="color:#ff0000;"><?=number_format($value['balance'])?>&nbsp;</td>
+					<?php }?>
 				</tr>
 				<?php $num++; }
 				}
 				else{
-					echo '<td colspan="3" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
+					if( !empty($_GET["due"]) ) echo '<td colspan="4" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
+					else echo '<td colspan="3" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
 				} ?>
 			</tbody>
 		</table>
