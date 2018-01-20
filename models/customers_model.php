@@ -146,7 +146,7 @@ class Customers_Model extends Model{
         $options = array_merge(array(
           'sort' => isset($options["sort"]) ? $options["sort"] : 'date',
           'dir' => isset($options["dir"]) ? $options["dir"] : 'DESC'
-        ));
+        ), $options);
 
         $w = 'ord_customer_id=:id';
         $w_arr = array(':id'=>$id);
