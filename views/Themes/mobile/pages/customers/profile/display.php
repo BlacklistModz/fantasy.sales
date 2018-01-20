@@ -78,10 +78,10 @@
 				<tr>
 					<th width="10%">#</th>
 					<th width="20%">วันที่</th>
-					<th width="20%">ORDER</th>
-					<th width="25%">ราคา</th>
+					<th width="25%">ORDER</th>
+					<th width="20%">ยอดขาย</th>
 					<?php if( !empty($_GET["due"]) ){ ?>
-					<th width="25" style="color:#ff0000;">ยอดค้างจ่าย</th>
+					<th width="20%" style="color:#ff0000;">ค้างจ่าย</th>
 					<?php } ?>
 				</tr>
 			</thead>
@@ -110,9 +110,9 @@
 				<?php $num++; }
 
 				if( !empty($_GET["due"]) )
-					echo '<td colspan="3" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td><td class="tar" style="color:#ff0000;"><b>'.number_format($sum_balance).' ฿</b>&nbsp;</td>';
+					echo '<td colspan="3" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).'</b>&nbsp;</td><td class="tar" style="color:#ff0000;"><b>'.number_format($sum_balance).'</b>&nbsp;</td>';
 				else
-					echo '<td colspan="3" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td>';
+					echo '<td colspan="3" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).'</b>&nbsp;</td>';
 				}
 				else{
 					if( !empty($_GET["due"]) ) echo '<td colspan="5" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
