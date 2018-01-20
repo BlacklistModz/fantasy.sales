@@ -17,7 +17,7 @@ class Orders extends Controller {
             if( empty($item) ) $this->error();
 
             $this->view->setData('topbar', array(
-                'title' => array( 0 => 
+                'title' => array( 0 =>
                     array( 'text' => '<i class="icon-shopping-basket"></i> Orders ('.$item['code'].')' ),
                 ),
                 'nav' => array(
@@ -45,7 +45,7 @@ class Orders extends Controller {
             $results = $this->model->lists( $options );
 
             $this->view->setData('topbar', array(
-                'title' => array( 0 => 
+                'title' => array( 0 =>
                     array( 'text' => '<i class="icon-shopping-basket"></i> Orders ('.$results['total'].')' ),
                 ),
             ) );
@@ -176,7 +176,7 @@ class Orders extends Controller {
 						$this->model->updateAllDiscount($_discount['id'], array(
 							'order' => $id,
 							'product' => $_POST["id"],
-							'discount'=>$_postData['discount'], 
+							'discount'=>$_postData['discount'],
 							'prices'=>$_postData['prices']
 						) );
 					}
@@ -263,7 +263,7 @@ class Orders extends Controller {
 					$this->model->updateAllDiscount($_discount['id'], array(
 						'order' => $id,
 						'product' => $_POST["id"],
-						'discount'=>$postData['discount'], 
+						'discount'=>$postData['discount'],
 						'prices'=>$postData['prices']
 					) );
 				}
@@ -318,7 +318,7 @@ class Orders extends Controller {
 				$_discount = $this->model->query('discounts')->getDiscountItem($_item["products_id"]);
 				if( !empty($_discount) ){
 					$product = $this->model->query('products')->get($_item["products_id"]);
-					$pro_price = !empty($product['pricing']) ? $product['pricing']['frontend'] : 0
+					$pro_price = !empty($product['pricing']) ? $product['pricing']['frontend'] : 0;
 					foreach ($_total['id'] as $key => $value) {
 						if( $_discount['id'] == $key ){
 							$this->model->updateAllDiscount($_discount['id'], array(
@@ -354,7 +354,7 @@ class Orders extends Controller {
 		if( empty($_POST['term_of_payment']) ){
 			$arr['error']['term_of_payment'] = 'กรุณาเลือกประเภทการจ่ายเงินสด';
 		}
-		
+
 		// $total = $this->model->getSummary( $order['items'] );
 
 		if( empty($arr['error']) ){
