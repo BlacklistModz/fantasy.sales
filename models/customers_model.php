@@ -142,6 +142,12 @@ class Customers_Model extends Model{
 
     #LISTS ORDERS
     public function listsOrders($id, $options=array()){
+      // print_r($options);die;
+        $options = array_merge(array(
+          'sort' => isset($options["sort"]) ? $options["sort"] : 'date',
+          'dir' => isset($options["dir"]) ? $options["dir"] : 'DESC'
+        ));
+
         $w = 'ord_customer_id=:id';
         $w_arr = array(':id'=>$id);
 
@@ -149,9 +155,10 @@ class Customers_Model extends Model{
           $w .= !empty($w) ? " AND " : "";
           $w .= "(SELECT COALESCE(SUM(pay_amount), 0) FROM payments WHERE pay_order_id=orders.id) < orders.ord_net_price";
         }
+        $orderby = $this->orderby( $options['sort'], $options['dir'] );
 
         $w = !empty($w) ? "WHERE {$w}" : "";
-        $data = $this->db->select("SELECT id, ord_code AS code, ord_sale_code AS sale_code, ord_type_commission AS comission, term_of_payment AS payments, ord_net_price AS net_price, ord_dateCreate AS date FROM orders {$w}", $w_arr);
+        $data = $this->db->select("SELECT id, ord_code AS code, ord_sale_code AS sale_code, ord_type_commission AS comission, term_of_payment AS payments, ord_net_price AS net_price, ord_dateCreate AS date FROM orders {$w} {$orderby}", $w_arr);
         $arr = $this->query('orders')->buildFrag($data, array('payment'=>true));
         // print_r($arr);die;
         return $arr;

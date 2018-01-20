@@ -58,7 +58,7 @@
 				<div class="clearfix">
 					<br>
 					<?php if( !empty($_GET["due"]) ){ ?>
-						<a href="<?=URL?>customers/<?=$this->item['id']?>" class="rfloat btn btn-blue btn-large" >ดูบิลทั้งหมด</a>
+						<a href="<?=URL?>customers/<?=$this->item['id']?>" class="rfloat btn btn-blue btn-large" >ดูยอดทั้งหมด</a>
 					<?php } else { ?>
 						<a href="<?=URL?>customers/<?=$this->item['id']?>?due=1" class="rfloat btn btn-red btn-large" >ดูยอดค้างจ่าย</a>
 					<?php } ?>
@@ -76,11 +76,12 @@
 		<table class="table table-bordered">
 			<thead>
 				<tr>
-					<th width="15%">#</th>
-					<th width="45%">ORDER</th>
-					<th width="20%">ราคา</th>
+					<th width="10%">#</th>
+					<th width="20%">วันที่</th>
+					<th width="20%">ORDER</th>
+					<th width="25%">ราคา</th>
 					<?php if( !empty($_GET["due"]) ){ ?>
-					<th width="20" style="color:#ff0000;">ยอดค้างจ่าย</th>
+					<th width="25" style="color:#ff0000;">ยอดค้างจ่าย</th>
 					<?php } ?>
 				</tr>
 			</thead>
@@ -93,10 +94,13 @@
 				foreach ($this->item['orders'] as $key => $value) {
 					$sum_price+=$value['net_price'];
 					$sum_balance+=$value['balance'];
+
+					// print_r($this->item);die;
 				?>
 				<tr>
 					<tr>
 					<td class="tac"><?=$num?></td>
+					<td class="tac"><?=date("d/m/Y", strtotime($value['date']))?></td>
 					<td class="mls">&nbsp;<?=$value['code']?></td>
 					<td class="tar"><?=number_format($value['net_price'])?>&nbsp;</td>
 					<?php if( !empty($_GET["due"]) ){ ?>
@@ -106,13 +110,13 @@
 				<?php $num++; }
 
 				if( !empty($_GET["due"]) )
-					echo '<td colspan="2" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td><td class="tar" style="color:#ff0000;"><b>'.number_format($sum_balance).' ฿</b>&nbsp;</td>';
+					echo '<td colspan="3" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td><td class="tar" style="color:#ff0000;"><b>'.number_format($sum_balance).' ฿</b>&nbsp;</td>';
 				else
-					echo '<td colspan="2" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td>';
+					echo '<td colspan="3" class="tac fwb">รวม</td><td class="tar"><b>'.number_format($sum_price).' ฿</b>&nbsp;</td>';
 				}
 				else{
-					if( !empty($_GET["due"]) ) echo '<td colspan="4" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
-					else echo '<td colspan="3" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
+					if( !empty($_GET["due"]) ) echo '<td colspan="5" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
+					else echo '<td colspan="4" class="tac fwb" style="color:red;">ไม่มีรายการสั่งซื้อสินค้า</td>';
 				} ?>
 
 			</tbody>

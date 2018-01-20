@@ -12,7 +12,10 @@ class Customers extends Controller {
 
 		if( !empty($id) ){
 			$options = array('orders'=>true);
-			if( isset($_GET['due']) ) $options['due'] = true;
+			if( !empty($_GET['due']) ) {
+				$options['due'] = true;
+				$options["dir"] = "ASC";
+			}
 
 			$item = $this->model->get($id, $options);
 			if( empty($item) ) $this->error();
